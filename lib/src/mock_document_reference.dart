@@ -12,9 +12,29 @@ class MockDocumentReference extends Mock implements DocumentReference {
   final Map<String, dynamic> root;
   final Map<String, dynamic> rootParent;
   final Map<String, dynamic> snapshotStreamControllerRoot;
+  final Map<String, dynamic> snapshotStreamControllerRootParent;
 
-  MockDocumentReference(this._documentId, this.root, this.rootParent,
-      this.snapshotStreamControllerRoot);
+  MockDocumentReference._(
+      this._documentId,
+      this.root,
+      this.rootParent,
+      this.snapshotStreamControllerRoot,
+      this.snapshotStreamControllerRootParent);
+
+  factory MockDocumentReference(
+      String documentId,
+      Map<String, dynamic> rootParent,
+      Map<String, dynamic> snapshotStreamControllerRootParent) {
+    final root = rootParent.containsKey(documentId)
+        ? rootParent[documentId]
+        : Map<String, dynamic>();
+    final snapshotStreamControllerRoot =
+        snapshotStreamControllerRootParent.containsKey(documentId)
+            ? snapshotStreamControllerRootParent[documentId]
+            : Map<String, dynamic>();
+    return MockDocumentReference._(documentId, root, rootParent,
+        snapshotStreamControllerRoot, snapshotStreamControllerRootParent);
+  }
 
   // ignore: unused_field
   final DocumentReferencePlatform _delegate = null;
@@ -26,6 +46,12 @@ class MockDocumentReference extends Mock implements DocumentReference {
   CollectionReference collection(String collectionPath) {
     return MockCollectionReference(getSubpath(root, collectionPath),
         getSubpath(snapshotStreamControllerRoot, collectionPath));
+  }
+
+  void _saveInParentCollection() {
+    rootParent[_documentId] = root;
+    snapshotStreamControllerRootParent[_documentId] =
+        snapshotStreamControllerRoot;
   }
 
   @override
@@ -59,6 +85,7 @@ class MockDocumentReference extends Mock implements DocumentReference {
         document[key] = value;
       }
     });
+    _saveInParentCollection();
     return Future.value(null);
   }
 
@@ -92,6 +119,7 @@ class MockDocumentReference extends Mock implements DocumentReference {
     if (!merge) {
       root.clear();
     }
+    _saveInParentCollection();
     return updateData(data);
   }
 

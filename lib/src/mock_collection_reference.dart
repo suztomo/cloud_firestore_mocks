@@ -50,8 +50,7 @@ class MockCollectionReference extends MockQuery implements CollectionReference {
       path = _generateAutoId();
     }
 
-    return MockDocumentReference(path, getSubpath(root, path), root,
-        getSubpath(snapshotStreamControllerRoot, path));
+    return MockDocumentReference(path, root, snapshotStreamControllerRoot);
   }
 
   @override
@@ -65,7 +64,8 @@ class MockCollectionReference extends MockQuery implements CollectionReference {
     }
     root[currentChildId] = data;
     fireSnapshotUpdate();
-    return Future.value(document(currentChildId));
+    final doc = document(currentChildId);
+    return Future.value(doc);
   }
 
   @override
