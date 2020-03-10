@@ -44,15 +44,15 @@ class MockFirestoreInstance extends Mock implements Firestore {
     return jsonText;
   }
 
-  void saveDocument(String path) {
+  void _saveDocument(String path) {
     _savedDocumentPaths.add(path);
   }
 
-  bool hasSavedDocument(String path) {
+  bool _hasSavedDocument(String path) {
     return _savedDocumentPaths.contains(path);
   }
 
-  bool removeSavedDocument(String path) {
+  bool _removeSavedDocument(String path) {
     return _savedDocumentPaths.remove(path);
   }
 

@@ -47,10 +47,10 @@ class MockCollectionReference extends MockQuery implements CollectionReference {
                       documentReference,
                       entry.key,
                       entry.value,
-                      _firestore.hasSavedDocument(documentReference.path));
+                      _firestore._hasSavedDocument(documentReference.path));
                 })
                 .where((snapshot) =>
-                    _firestore.hasSavedDocument(snapshot.reference.path))
+                    _firestore._hasSavedDocument(snapshot.reference.path))
                 .toList());
 
   static final Random _random = Random();
@@ -97,7 +97,7 @@ class MockCollectionReference extends MockQuery implements CollectionReference {
     root[childId] = data;
 
     final documentReference = document(childId);
-    _firestore.saveDocument(documentReference.path);
+    _firestore._saveDocument(documentReference.path);
 
     fireSnapshotUpdate();
     return Future.value(documentReference);
@@ -115,7 +115,7 @@ class MockCollectionReference extends MockQuery implements CollectionReference {
     final documents = root.entries.map((entry) {
       final documentReference = document(entry.key);
       return MockDocumentSnapshot(documentReference, entry.key, entry.value,
-          _firestore.hasSavedDocument(documentReference.path));
+          _firestore._hasSavedDocument(documentReference.path));
     }).toList();
     snapshotStreamController.add(MockSnapshot(documents));
   }

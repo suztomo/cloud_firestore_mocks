@@ -70,7 +70,7 @@ class MockDocumentReference extends Mock implements DocumentReference {
         document[key] = value;
       }
     });
-    _firestore.saveDocument(path);
+    _firestore._saveDocument(path);
     return Future.value(null);
   }
 

@@ -261,7 +261,6 @@ void main() {
     await instance.collection('users').document(uid).delete();
     final users = await instance.collection('users').getDocuments();
     expect(users.documents.isEmpty, equals(true));
-    expect(instance.hasSavedDocument('users/abc'), false);
   });
 
   group('FieldValue', () {

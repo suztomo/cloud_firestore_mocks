@@ -18,7 +18,7 @@ class MockQuery extends Mock implements Query {
 
   @override
   Future<QuerySnapshot> getDocuments({Source source = Source.serverAndCache}) {
-    final savedDocuments = documents.where((snapshot) => _firestore.hasSavedDocument(snapshot.reference.path)).toList();
+    final savedDocuments = documents.where((snapshot) => _firestore._hasSavedDocument(snapshot.reference.path)).toList();
     return Future.value(MockSnapshot(savedDocuments));
   }
 
